@@ -1,3 +1,5 @@
 = imeetdashboard
 
-Description goes here
+Description goes here::
+
+This plugin is for NProject dashboard (Project management tool)

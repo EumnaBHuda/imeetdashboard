@@ -1,0 +1,96 @@
+
+
+<% if @projects.any? %>
+
+<table class="list files">
+  <tr bgcolor="#eaeaea">
+    <td><b><%= "Project Name" %></b></td>
+    <td><b><%= "Due Date" %></b></td>
+    <td><b><%= "Status" %></b></td>
+    <td><b><%= "Progress" %></b></td>
+    <td><b><%= "Issues Open" %></b></td>
+    <td><b><%= "Issues Resolved" %></b></td>
+    <td><b><%= "Issues Closed" %></b></td>
+    <td><%= "bar" %></td>>
+  </tr>
+
+
+
+<% for project in @projectss %>
+   
+        <% numberOfissues =  Issue.where(project_id: project.id).count %>
+        <% openIssues = Issue.where(project_id: project.id, status_id: [1,2,3]).count %>
+        <% resolvedIssues = Issue.where(project_id: project.id, status_id: 3).count %>
+        <% closedIssues = Issue.where(project_id: project.id, status_id: 5).count %>
+
+
+    <tr class="file <%= cycle("odd", "even") %>">
+    <td class="filename"> <%= link_to_project project %> </td>
+    <td>
+   <% project.visible_custom_field_values.each do |custom_value| %>
+  <% if !custom_value.value.blank? %>
+     <% pDate = custom_value.to_s %>
+     <%= date = Date.parse(pDate).strftime("%B %d, %Y") %>
+  
+  <% else %>
+  <%= "Undecided" %>
+  <% end %>
+<% end %>
+
+
+    </td>
+    <td ><b>
+      <% if openIssues==0 %>
+      <%= image_tag '/plugin_assets/imeetdashboard/images/green.jpg', :size  => '22x22' %> 
+      <% elsif (openIssues/numberOfissues)>0.5 %>
+
+
+
+<%= image_tag '/plugin_assets/imeetdashboard/images/red.jpg', :size  => '22x22' %> 
+      
+      <% elsif (openIssues/numberOfissues)<0.5 %>
+
+
+
+<%= image_tag '/plugin_assets/imeetdashboard/images/yellow.jpg', :size  => '22x22'  %>
+
+<% else %>
+      <%= image_tag '/plugin_assets/imeetdashboard/images/green.jpg', :size  => '22x22'  %>
+<%end %>
+</td>
+
+
+
+<td >
+<% nOI = numberOfissues.to_f %>
+<% cI = closedIssues.to_f %>
+<% if nOI > 0.0 %> 
+<% percentage = ((cI/nOI)*100.0) %>
+<%= percentage.ceil %> %
+<% else %>
+<%= "0%" %>
+<% end %>
+
+  </td>
+
+
+<td class = "newIssue">
+
+<style> .newIssue{
+        COLOR: red 
+}
+</style>
+      <%= link_to openIssues, project_issues_path(project, :status_id => 'o', :set_filter => 1, :tracker_id => 5) %>
+</td>
+    
+<td> <%= resolvedIssues %> </td>
+<td> <%= link_to closedIssues, project_issues_path(project, :status_id => 'c', :set_filter => 1, :tracker_id => 5) %></td>
+<td>
+ <div class="progress"> <span class="meter"></span> </div> 
+
+</td>  
+<% end %>
+</table>
+
+<%#= button_to   "See All Projects", { :controller => 'projects', :action => 'index' }, :caption => :label_project_plural, :method => :get, :if => Proc.new { User.current.logged? } %>
+<% end %> 

@@ -1,0 +1,133 @@
+<%= stylesheet_link_tag :imdashs %>
+<%= stylesheet_link_tag :jquery.mCustomScrollbar %>
+<%= javascript_include_tag :jquery.mCustomScrollbar.concat.min %>
+ <% @today = Date.today %>
+  <% @nextday = Date.today+1 %>
+
+ <%#= (@nextday.to_date - @today.to_date).to_i %>
+<%# @today = time.strftime("%B %d, %Y") %>
+
+<% if @issuesAssignedToMe.count==0 %>
+
+<%= "There is no issue assigned to you " %>
+
+<% else %>
+<div class="wrap">
+
+<table class="out_table">
+  
+
+<tr bgcolor="#eaeaea">
+    <td ><b><%= "Issues" %></b></td>
+    <td ><b><%= "Project" %></b></td>
+    <td style="width:50px;"><b><%= "Priority" %></b></td>
+    <td  style="width:100px;" ><b><%= "Progressive Status" %></b></td>
+    <td ><b><%= "newc" %></b></td>
+    <td ><b><%= "newr" %></b></td>
+</tr>
+</table>
+<div class="in_table">
+<table class="scrollable_table">
+
+<% count = 0 %>
+<% for i in @issuesAssignedToMe %>
+
+    <%# break  if count>15 %>
+    <tr class="color <%= cycle("od", "eve") %>">
+    <td class="td_class" ><%#= link_to_issue  i %>
+    <%= link_to truncate(i.subject.capitalize, :length => 60), issue_path(i) %> <!--(<%=h i.status %>) -->
+    </td>
+    <td class="td_class"><% p= Project.where(id: i.project_id) %>
+                <%p.each do |l| %>
+                <%= link_to_project l %>
+                <% end %>
+    </td>
+    <td class="td_class" style="width:50px;" >
+    <% if i.priority_id == 1 %>
+        <%="Low"%>
+    <%  elsif i.priority_id ==2 %>
+        <%= "Normal" %>
+     <%   elsif i.priority_id==3 %>
+        <%= "High" %>
+      
+     <% elsif i.priority_id ==4 %>
+        <%= "Urgent" %>
+     <% else %>
+     <%= "Immediate" %>
+     
+     <% end %>
+ </td> 
+    
+   
+  <% if i.due_date!= nil %>
+  <% sub_date = -(Date.today - i.due_date).to_i  %>
+  <% end %>
+    <td style="width:100px;"> 
+     <% if sub_date!= nil && sub_date < 0 && i.done_ratio != 0  %>
+          <%#= image_tag '/plugin_assets/imeetdashboard/images/red.jpg', :size  => '22x22' %> 
+      <div class="nice round progressbar  alert large-10"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div>
+     <% elsif sub_date!= nil && sub_date >= 2   && i.done_ratio != 0%>
+          <%#= image_tag '/plugin_assets/imeetdashboard/images/green.jpg', :size  => '22x22' %> 
+      <div class="nice round progressbar  large-6"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div>
+     <% elsif sub_date!= nil && sub_date == 1 && i.done_ratio <= 80 && i.done_ratio != 0 %>
+          
+      <div class="nice round progressbar  success large-10"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div>
+
+     <% elsif sub_date!= nil && sub_date == 1 && i.done_ratio >= 80  %>
+         
+      <div class="nice round progressbar  large-6"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div> 
+
+     <% elsif sub_date!= nil && sub_date == 0 && i.done_ratio != 100 && i.done_ratio != 0 %>
+        
+      <div class="nice round progressbar  alert large-10"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div>
+
+     <% elsif sub_date!= nil && sub_date == 0 && i.done_ratio == 100 %>
+       
+      <div class="nice round progressbar  large-6"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div> 
+      
+      <% elsif sub_date!= nil  && i.done_ratio == 0 %>
+        
+      <div class="nice round progressbar  secondary large-6"> 
+      <span class="meter" style="width: <%= i.done_ratio %>%"><%= i.done_ratio %>%</span> 
+      </div>  
+
+     <% end %> 
+    </td>
+   <td class="td_class" ><%#= link_to_issue  i %>
+    <%= link_to truncate(i.subject.capitalize, :length => 60), issue_path(i) %> <!--(<%=h i.status %>) -->
+    </td>
+<td class="td_class" ><%#= link_to_issue  i %>
+    <%= link_to truncate(i.subject.capitalize, :length => 60), issue_path(i) %> <!--(<%=h i.status %>) -->
+    </td>
+     </tr>
+
+       <% count = count+1 %>
+  <% end %>
+
+<% end %>
+
+
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+</div>

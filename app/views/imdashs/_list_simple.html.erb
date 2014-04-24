@@ -1,0 +1,40 @@
+<% if issues && issues.any? %>
+<%= form_tag({}) do %>
+
+
+<div id="headerfix">
+<table class= "sortable"id="tablesorter">
+    <thead class="fixedHeader">
+    <tr>
+    <th></th>
+    <th><%=l(:field_project)%></th>
+    <th><%=l(:field_tracker)%></th>
+    <th><%=l(:field_subject)%></th>
+    <th><%=l(:field_updated_on)%></th>
+    </tr>
+  </thead> </div>
+<div id="bodyScroll">
+    <tbody class="scrollContent">
+    <% for issue in issues %>
+    <tr >
+      <td>
+        <%= check_box_tag("ids[]", issue.id, false, :style => 'display:none;', :id => nil) %>
+        <%= link_to issue.id, issue_path(issue) %>
+      </td>
+      <td ><%= link_to_project(issue.project) %></td>
+      <td ><%=h issue.tracker %></td>
+      <td>
+        <%= link_to truncate(issue.subject, :length => 60), issue_path(issue) %> (<%=h issue.status %>)
+      </td>
+      <td ><%= issue.updated_on.to_date %></td>
+    </tr>
+    <% end %>
+    </tbody>
+  </div>
+  </table>
+<% end %>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+  

@@ -1,0 +1,34 @@
+   
+
+<table class="list files">
+  <tr bgcolor="#eaeaea">
+    <td><b><%= "Name" %></b></td>
+    <td><b><%= "Call" %></b></td>
+
+  </tr>
+
+    <tr class="file <%= cycle("odd", "even") %>">
+    <td class="filename"> Samuel Clemens </td>
+    <td class="created_on"> (312)555-1212</td>
+     </tr>
+    <tr class="file <%= cycle("odd", "even") %>">
+    <td class="filename"> Arthur Black </td>
+    <td class="created_on"> (312)555-1212</td>
+     </tr>
+    <tr class="file <%= cycle("odd", "even") %>">
+    <td class="filename"> Jackueline Suzanne </td>
+    <td class="created_on"> (312)555-1212</td>
+     </tr>
+    <tr class="file <%= cycle("odd", "even") %>">
+    <td class="filename"> Harold Finch </td>
+    <td class="created_on"> (312)555-1212</td>
+     </tr>
+    <tr class="file <%= cycle("odd", "even") %>">
+    <td class="filename"> John Chowdhury </td>
+    <td class="created_on"> (312)555-1212</td>
+     </tr>
+
+</table>
+
+
+<%= button_to  "See all", {:controller => 'contacts', :action => 'index'}, :caption => "Contacts",:method => :get,:if => Proc.new { User.current.logged? } %>

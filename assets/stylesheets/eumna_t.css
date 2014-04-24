@@ -1,0 +1,27 @@
+.wrap {
+    width: 350px;
+    
+}
+
+.in_table {
+    width: 366px;
+    overflow-y: auto;
+    height: 286px;
+}
+.wrap table.scrollable_table{
+  background: white;
+  margin-bottom: 1.25rem;
+  border: solid 1px #dddddd;
+ width: 100%;
+  table-layout: fixed;
+}
+.wrap table.out_table {
+    table-layout: fixed;
+    width: 351px;
+}
+table.out_table {
+    background: none repeat scroll 0% 0% white;
+    margin-bottom: 0px;
+    border: 1px solid rgb(221, 221, 221);
+    table-layout: fixed;
+}
